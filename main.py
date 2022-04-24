@@ -1,14 +1,11 @@
-"""
-TODO: INSERÇÃO DE DADOS QUANDO EXISTE NÓ ROOT
-"""
-
 from random import random
 import math
 import os
 from utils import getRangeOfKey
+from editIndex import editIndex
 
 ORDER = 3
-ERROR_ROOT = 'node does not exist'
+ERROR_ROOT = 'root node does not exist'
 
 def generateNumberNode():
     return int(random() * 10000)
@@ -102,8 +99,8 @@ def createLeaf(titleNode, data, parent='null', next='null'):
     f.write(newContent)
     f.close()
 
-def orderDataLeaf(data):
-    return sorted(data, key=lambda d: d['key']) 
+def orderDataNode(data):
+    return sorted(data, key=lambda d: int(d['key'])) 
 
 def addInLeaf(titleNode, data):
     # data é um array de dicionários
@@ -124,7 +121,7 @@ def addInLeaf(titleNode, data):
     f = open("paginas/folhas/" + titleNode + ".txt", "w+", encoding="utf-8")
     newContent = ''
 
-    for element in orderDataLeaf(arrayToSort):
+    for element in orderDataNode(arrayToSort):
         key = element['key']
         id_element = element['id']
         tipo = element['tipo']
@@ -134,6 +131,30 @@ def addInLeaf(titleNode, data):
     
     f.write(newContent + nextLine + parentLine)
     f.close()    
+
+def addInIndex(titleNode, data):
+    f = open("paginas/indices/" + titleNode + ".txt", "r")
+    oldContent = f.readlines()
+    oldContent = ''.join(oldContent)
+
+    arrayToSort = parseIndex(titleNode)
+    for element in data:
+        arrayToSort.append(element)
+
+    f.close()
+
+    f = open("paginas/indices/" + titleNode + ".txt", "w+", encoding="utf-8")
+    newContent = ''
+
+    for element in orderDataNode(arrayToSort):
+        key = element['key']
+        left = element['left']
+        right = element['right']
+
+        newContent += "key: {}\nleft: {} \nright: {}\n\n".format(str(key), left, right)
+    
+    f.write(newContent)
+    f.close()   
 
 def deleteFileLeaf(titleNode):
     os.remove("paginas/folhas/" + titleNode + ".txt")
@@ -165,7 +186,29 @@ def splitLeaf(titleNode):
 
         deleteFileLeaf(titleNode)
     else:
-        """..."""
+        print('to_aqui')
+        dataLeaf = leafContent[:-2]
+        mid = math.floor(len(dataLeaf) / 2)
+
+        leftContent = dataLeaf[:mid]
+        rightContent = dataLeaf[mid:]
+
+        parentName = leafContent[-1]['parent']
+        parentNode = parseIndex(leafContent[-1]['parent'])
+
+        leftLeafName = 'leaf_' + str(generateNumberNode())
+        rightLeafName = 'leaf_' + str(generateNumberNode())
+
+        createLeaf(leftLeafName, leftContent, parent=parentName, next=rightLeafName)
+        createLeaf(rightLeafName, rightContent, parent=parentName)
+        editIndex(parentName, parentNode[0]['key'], newRight=leftLeafName)
+        addInIndex(parentName, [{
+            'key': rightContent[0]['key'],
+            'left': 'null',
+            'right': rightLeafName, 
+        }])
+        deleteFileLeaf(titleNode)
+
 
 def insertData(data):
     root = parseIndex('node_root')
@@ -195,10 +238,9 @@ def insertData(data):
 
         addInLeaf(page, [data])
         leafContent = parseLeaf(page)
-        print(leafContent)
 
         if (len(leafContent) - 2 == ORDER):
-            print('fazer split')
+            splitLeaf(page)
 
 insertData({"key": '1956', "tipo": "rose", "rotulo": "bla_bla", "id": '9'})
 insertData({"key": '1888', "tipo": "bbb", "rotulo": "bla_bla", "id": '9'})

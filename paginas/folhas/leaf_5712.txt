@@ -1,0 +1,7 @@
+key: 1777
+id: 9 
+rotulo: bla_bla
+tipo: bbb
+
+next: leaf_9703
+parent: node_root
