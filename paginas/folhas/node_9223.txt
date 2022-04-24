@@ -1,7 +1,0 @@
-key: 1956
-id: 9 
-rotulo: bla_bla
-tipo: rose
-
-next: node_750
-parent: node_root
