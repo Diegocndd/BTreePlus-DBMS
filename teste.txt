@@ -1,7 +1,0 @@
-key: 1004
-left: ggg
-right: fff
-
-key: 1005
-left: ggg
-right: fff
