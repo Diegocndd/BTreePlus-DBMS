@@ -78,7 +78,7 @@ def createIndex(titleNode, data):
     f.write(newContent)
     f.close()
 
-def createLeaf(titleNode, data, parent='null'):
+def createLeaf(titleNode, data, parent='null', next='null'):
     # data é um array de dicionários
     f = open("paginas/folhas/" + titleNode + ".txt", "w")
     newContent = ''
@@ -91,10 +91,8 @@ def createLeaf(titleNode, data, parent='null'):
 
         newContent += "key: {}\nid: {} \nrotulo: {}\ntipo: {}\n\n".format(str(key), str(id_element), rotulo, tipo)
     
-    if not parent:
-        newContent += "parent: null"
-    else:
-        newContent += "parent: " + str(parent)
+    newContent += "next: " + str(next) + "\n"
+    newContent += "parent: " + str(parent)
 
     f.write(newContent)
     f.close()
@@ -104,6 +102,8 @@ def addInLeaf(titleNode, data):
     f = open("paginas/folhas/" + titleNode + ".txt", "r")
     oldContent = f.readlines()
     parentLine = oldContent[-1]
+    nextLine = oldContent[-2]
+    oldContent.pop()
     oldContent.pop()
     oldContent = ''.join(oldContent)
     f.close()
@@ -119,7 +119,7 @@ def addInLeaf(titleNode, data):
 
         newContent += "key: {}\nid: {} \nrotulo: {}\ntipo: {}\n\n".format(str(key), str(id_element), rotulo, tipo)
     
-    f.write(oldContent + newContent + parentLine)
+    f.write(oldContent + newContent + nextLine + parentLine)
     f.close()    
 
 def deleteFileLeaf(titleNode):
@@ -131,8 +131,7 @@ def splitLeaf(titleNode):
 
     # se o pai for nulo, não existe root
     if leafContent[-1]['parent'] == 'null':
-        # TODO: -2
-        dataLeaf = leafContent[:-1]
+        dataLeaf = leafContent[:-2]
         mid = math.floor(len(dataLeaf) / 2)
 
         leftContent = dataLeaf[:mid]
@@ -144,7 +143,7 @@ def splitLeaf(titleNode):
         leftLeafName = 'node_' + str(generateNumberNode())
         rightLeafName = 'node_' + str(generateNumberNode())
 
-        createLeaf(leftLeafName, leftContent, parent=rootIndexName)
+        createLeaf(leftLeafName, leftContent, parent=rootIndexName, next=rightLeafName)
         createLeaf(rightLeafName, rightContent, parent=rootIndexName)
         createIndex(rootIndexName, [{
             'key': rootKey,
@@ -169,9 +168,8 @@ def insertData(data):
             leafContent = parseLeaf(titleFile)
             addInLeaf(titleFile, [data])
 
-            # -1 porque desconsideramos a linha do parent
-            # TODO: -2 para descosiderar a linha do next
-            if (len(leafContent) - 1 == ORDER - 1): # split no nó e criação do root
+            # -2 porque desconsideramos as linhas do parent e do next
+            if (len(leafContent) - 2 == ORDER - 1): # split no nó e criação do root
                 splitLeaf(titleFile)
     else:
         """percorrer árvore para adicionar"""
