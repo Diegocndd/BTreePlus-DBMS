@@ -1,0 +1,12 @@
+key: 1956
+id: 9 
+rotulo: bla_bla
+tipo: rose
+
+key: 9999
+id: 19 
+rotulo: opopopo
+tipo: lalal
+
+next: null
+parent: node_root

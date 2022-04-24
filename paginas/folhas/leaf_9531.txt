@@ -1,7 +1,0 @@
-key: 1888
-id: 9 
-rotulo: bla_bla
-tipo: bbb
-
-next: leaf_9318
-parent: node_root

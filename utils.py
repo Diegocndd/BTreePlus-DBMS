@@ -1,4 +1,7 @@
 def getRangeOfKey(key, data):
+    """
+    Esse algoritmo é executado em cada página e decide qual caminho de ponteiros deve seguir
+    """
     keyRange = None
     searchKey = int(key)
     qty = len(data)

@@ -1,3 +1,8 @@
+"""
+As função de parse leem o conteúdo das páginas e retornam dicionários com as informações
+para serem tratadas pelo programa.
+"""
+
 from random import random
 import math
 import os
@@ -162,7 +167,7 @@ def deleteFileLeaf(titleNode):
 def splitLeaf(titleNode):
     leafContent = parseLeaf(titleNode)
 
-    # se o pai for nulo, não existe root
+    # se o pai for null, não existe root. então, deve ser criado
     if leafContent[-1]['parent'] == 'null':
         dataLeaf = leafContent[:-2]
         mid = math.floor(len(dataLeaf) / 2)
@@ -176,6 +181,7 @@ def splitLeaf(titleNode):
         leftLeafName = 'leaf_' + str(generateNumberNode())
         rightLeafName = 'leaf_' + str(generateNumberNode())
 
+        # cria o root e faz o split na folha
         createLeaf(leftLeafName, leftContent, parent=rootIndexName, next=rightLeafName)
         createLeaf(rightLeafName, rightContent, parent=rootIndexName)
         createIndex(rootIndexName, [{
@@ -186,7 +192,10 @@ def splitLeaf(titleNode):
 
         deleteFileLeaf(titleNode)
     else:
-        print('to_aqui')
+        # se já existir root, fazer o split do nó e subir mais uma key para o root
+        """
+        TODO: Essa função só funciona se o root não estiver cheio.
+        """
         dataLeaf = leafContent[:-2]
         mid = math.floor(len(dataLeaf) / 2)
 
@@ -209,24 +218,26 @@ def splitLeaf(titleNode):
         }])
         deleteFileLeaf(titleNode)
 
-
 def insertData(data):
     root = parseIndex('node_root')
 
     if root == ERROR_ROOT:
-        # verifica se já existe nó folha sendo construído
+        # verifica se já existe algum nó-folha sendo construído
         contentLeaf = os.listdir(path='./paginas/folhas')
         if len(contentLeaf) == 0:
+            # se não existir, cria a primeira folha
             createLeaf('leaf_' + str(generateNumberNode()), [data])
         else:
+            # se existir, adiciona na folha já existente
             titleFile = contentLeaf[0].split('.')[0]
             leafContent = parseLeaf(titleFile)
             addInLeaf(titleFile, [data])
 
             # -2 porque desconsideramos as linhas do parent e do next
-            if (len(leafContent) - 2 == ORDER - 1): # split no nó e criação do root
+            if (len(leafContent) - 2 == ORDER - 1): # se a folha estiver cheia, fazer o split e criar o root
                 splitLeaf(titleFile)
     else:
+        # se o root existe, vamos percorrer a árvore para descobrir onde colocar o novo dado
         actualNode = parseIndex('node_root')
         referenceNode, position = getRangeOfKey(data['key'], actualNode)
 
@@ -243,6 +254,6 @@ def insertData(data):
             splitLeaf(page)
 
 insertData({"key": '1956', "tipo": "rose", "rotulo": "bla_bla", "id": '9'})
-insertData({"key": '1888', "tipo": "bbb", "rotulo": "bla_bla", "id": '9'})
-insertData({"key": "1777", "tipo": "bbb", "rotulo": "bla_bla", "id": "9"})
+insertData({"key": '1888', "tipo": "cabernet", "rotulo": "xxxxxx", "id": '155'})
+insertData({"key": "1777", "tipo": "ssss", "rotulo": "bla_bla", "id": "30"})
 insertData({"key": "9999", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
