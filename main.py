@@ -1,5 +1,5 @@
 """
-As função de parse leem o conteúdo das páginas e retornam dicionários com as informações
+As funções de parse leem o conteúdo das páginas e retornam dicionários com as informações
 para serem tratadas pelo programa.
 """
 
