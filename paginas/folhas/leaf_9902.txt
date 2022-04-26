@@ -1,0 +1,13 @@
+key: 3
+id: 155 
+rotulo: xxxxxx
+tipo: cabernet
+
+key: 3
+id: 30 
+rotulo: bla_bla
+tipo: ssss
+
+next: null
+parent: node_root
+back: leaf_2903

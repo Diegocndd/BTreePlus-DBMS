@@ -1,0 +1,13 @@
+key: 3
+id: 19 
+rotulo: opopopo
+tipo: lalal
+
+key: 3
+id: 9 
+rotulo: bla_bla
+tipo: rose
+
+next: leaf_9902
+parent: node_root
+back: null
