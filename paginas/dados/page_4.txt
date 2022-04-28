@@ -1,0 +1,7 @@
+id: 71,rotulo: extremal-dolcetto,ano_colheita: 1938,tipo: tinto
+id: 97,rotulo: endothermic-merlot,ano_colheita: 1938,tipo: rosé
+id: 154,rotulo: associative-cabernet,ano_colheita: 1938,tipo: rosé
+id: 545,rotulo: flashed-madeira,ano_colheita: 1938,tipo: rosé
+id: 672,rotulo: coincident-barolo,ano_colheita: 1938,tipo: tinto
+id: 879,rotulo: gentle-sherry,ano_colheita: 1938,tipo: rosé
+id: 997,rotulo: free-cabernet,ano_colheita: 1938,tipo: branco

@@ -1,0 +1,10 @@
+id: 59,rotulo: brute-force-auslese,ano_colheita: 2007,tipo: tinto
+id: 116,rotulo: dark-port,ano_colheita: 2007,tipo: branco
+id: 162,rotulo: slim-riesling,ano_colheita: 2007,tipo: rosé
+id: 217,rotulo: exhaustive-mead,ano_colheita: 2007,tipo: rosé
+id: 319,rotulo: cool-madeira,ano_colheita: 2007,tipo: rosé
+id: 437,rotulo: brave-grappa,ano_colheita: 2007,tipo: rosé
+id: 517,rotulo: naive-banylus,ano_colheita: 2007,tipo: branco
+id: 669,rotulo: spry-cabernet,ano_colheita: 2007,tipo: rosé
+id: 702,rotulo: exothermic-chinon,ano_colheita: 2007,tipo: tinto
+id: 712,rotulo: oily-barolo,ano_colheita: 2007,tipo: branco

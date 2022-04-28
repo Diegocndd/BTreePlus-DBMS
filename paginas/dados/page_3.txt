@@ -1,0 +1,7 @@
+id: 45,rotulo: lead-lambrusco,ano_colheita: 1961,tipo: rosé
+id: 261,rotulo: cruel-champagne,ano_colheita: 1961,tipo: tinto
+id: 498,rotulo: glum-champagne,ano_colheita: 1961,tipo: branco
+id: 511,rotulo: stubborn-claret,ano_colheita: 1961,tipo: branco
+id: 647,rotulo: crunchy-marsanne,ano_colheita: 1961,tipo: tinto
+id: 860,rotulo: citron-mead,ano_colheita: 1961,tipo: branco
+id: 959,rotulo: kinetic-bardolino,ano_colheita: 1961,tipo: rosé

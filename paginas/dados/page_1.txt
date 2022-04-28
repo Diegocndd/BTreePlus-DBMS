@@ -1,0 +1,15 @@
+id: 29,rotulo: concrete-chardonnay,ano_colheita: 1958,tipo: branco
+id: 233,rotulo: exponential-muscat,ano_colheita: 1958,tipo: tinto
+id: 420,rotulo: auburn-dolcetto,ano_colheita: 1958,tipo: rosé
+id: 471,rotulo: short-shiraz,ano_colheita: 1958,tipo: tinto
+id: 475,rotulo: unary-port,ano_colheita: 1958,tipo: branco
+id: 476,rotulo: warm-noir,ano_colheita: 1958,tipo: branco
+id: 510,rotulo: selfish-dolcetto,ano_colheita: 1958,tipo: tinto
+id: 520,rotulo: inflammable-albariño,ano_colheita: 1958,tipo: branco
+id: 572,rotulo: grouchy-chinon,ano_colheita: 1958,tipo: rosé
+id: 622,rotulo: exhaustive-chardonnay,ano_colheita: 1958,tipo: rosé
+id: 691,rotulo: rowdy-riesling,ano_colheita: 1958,tipo: branco
+id: 704,rotulo: dry-port,ano_colheita: 1958,tipo: tinto
+id: 745,rotulo: steel-barbaresco,ano_colheita: 1958,tipo: tinto
+id: 763,rotulo: savage-muscat,ano_colheita: 1958,tipo: rosé
+id: 808,rotulo: stern-banylus,ano_colheita: 1958,tipo: rosé

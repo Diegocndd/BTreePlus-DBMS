@@ -1,0 +1,8 @@
+id: 101,rotulo: great-chardonnay,ano_colheita: 1931,tipo: rosé
+id: 410,rotulo: cyclic-chablis,ano_colheita: 1931,tipo: branco
+id: 557,rotulo: daring-burgundy,ano_colheita: 1931,tipo: branco
+id: 682,rotulo: rosy-port,ano_colheita: 1931,tipo: rosé
+id: 772,rotulo: aquamarine-muscat,ano_colheita: 1931,tipo: rosé
+id: 845,rotulo: mute-madeira,ano_colheita: 1931,tipo: tinto
+id: 878,rotulo: violet-port,ano_colheita: 1931,tipo: tinto
+id: 912,rotulo: avocado-chianti,ano_colheita: 1931,tipo: rosé

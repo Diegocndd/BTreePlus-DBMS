@@ -1,0 +1,6 @@
+id: 240,rotulo: wise-sauvignon,ano_colheita: 1960,tipo: rosé
+id: 263,rotulo: swarm-barbaresco,ano_colheita: 1960,tipo: rosé
+id: 759,rotulo: binding-champagne,ano_colheita: 1960,tipo: branco
+id: 836,rotulo: wood-mead,ano_colheita: 1960,tipo: rosé
+id: 944,rotulo: lenient-chinon,ano_colheita: 1960,tipo: branco
+id: 968,rotulo: radial-auslese,ano_colheita: 1960,tipo: tinto

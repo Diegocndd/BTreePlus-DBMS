@@ -1,0 +1,13 @@
+id: 136,rotulo: synchronic-prosecco,ano_colheita: 2004,tipo: tinto
+id: 235,rotulo: cautious-rosé,ano_colheita: 2004,tipo: tinto
+id: 315,rotulo: corn-chardonnay,ano_colheita: 2004,tipo: rosé
+id: 518,rotulo: rigid-moscato,ano_colheita: 2004,tipo: rosé
+id: 586,rotulo: avocado-dolcetto,ano_colheita: 2004,tipo: rosé
+id: 595,rotulo: khaki-chinon,ano_colheita: 2004,tipo: branco
+id: 605,rotulo: mean-sauvignon,ano_colheita: 2004,tipo: branco
+id: 646,rotulo: vibrant-bardolino,ano_colheita: 2004,tipo: rosé
+id: 664,rotulo: icy-cabernet,ano_colheita: 2004,tipo: tinto
+id: 679,rotulo: simple-riesling,ano_colheita: 2004,tipo: branco
+id: 794,rotulo: modern-cabernet,ano_colheita: 2004,tipo: rosé
+id: 900,rotulo: ascent-amarone,ano_colheita: 2004,tipo: tinto
+id: 992,rotulo: windy-noir,ano_colheita: 2004,tipo: branco

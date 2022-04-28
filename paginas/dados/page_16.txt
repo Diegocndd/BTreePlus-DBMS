@@ -1,0 +1,13 @@
+id: 170,rotulo: grim-shiraz,ano_colheita: 1920,tipo: branco
+id: 173,rotulo: sophisticated-chinon,ano_colheita: 1920,tipo: tinto
+id: 228,rotulo: warm-sauvignon,ano_colheita: 1920,tipo: tinto
+id: 249,rotulo: spicy-dolcetto,ano_colheita: 1920,tipo: tinto
+id: 288,rotulo: amicable-sherry,ano_colheita: 1920,tipo: rosé
+id: 494,rotulo: jolly-chablis,ano_colheita: 1920,tipo: branco
+id: 523,rotulo: brass-prosecco,ano_colheita: 1920,tipo: rosé
+id: 573,rotulo: iron-albariño,ano_colheita: 1920,tipo: tinto
+id: 640,rotulo: intricate-bardolino,ano_colheita: 1920,tipo: tinto
+id: 644,rotulo: broad-noir,ano_colheita: 1920,tipo: branco
+id: 796,rotulo: obvious-banylus,ano_colheita: 1920,tipo: rosé
+id: 842,rotulo: obvious-merlot,ano_colheita: 1920,tipo: rosé
+id: 971,rotulo: wooden-burgundy,ano_colheita: 1920,tipo: rosé

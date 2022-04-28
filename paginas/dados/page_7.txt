@@ -1,0 +1,16 @@
+id: 144,rotulo: concrete-prosecco,ano_colheita: 1917,tipo: branco
+id: 151,rotulo: merry-rosé,ano_colheita: 1917,tipo: tinto
+id: 307,rotulo: sad-champagne,ano_colheita: 1917,tipo: tinto
+id: 321,rotulo: sparse-pinot,ano_colheita: 1917,tipo: rosé
+id: 337,rotulo: faded-chardonnay,ano_colheita: 1917,tipo: rosé
+id: 339,rotulo: elaborate-arneis,ano_colheita: 1917,tipo: rosé
+id: 398,rotulo: burning-muscat,ano_colheita: 1917,tipo: branco
+id: 406,rotulo: fresh-champagne,ano_colheita: 1917,tipo: branco
+id: 444,rotulo: active-burgundy,ano_colheita: 1917,tipo: branco
+id: 497,rotulo: navy-noir,ano_colheita: 1917,tipo: branco
+id: 634,rotulo: arid-sauvignon,ano_colheita: 1917,tipo: tinto
+id: 636,rotulo: funny-marsanne,ano_colheita: 1917,tipo: branco
+id: 651,rotulo: internal-pinot,ano_colheita: 1917,tipo: rosé
+id: 678,rotulo: gray-arneis,ano_colheita: 1917,tipo: tinto
+id: 776,rotulo: marked-amarone,ano_colheita: 1917,tipo: rosé
+id: 857,rotulo: collinear-arneis,ano_colheita: 1917,tipo: rosé

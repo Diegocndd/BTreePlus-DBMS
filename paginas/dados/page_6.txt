@@ -1,0 +1,7 @@
+id: 280,rotulo: sour-riesling,ano_colheita: 1996,tipo: rosé
+id: 287,rotulo: curious-rosé,ano_colheita: 1996,tipo: rosé
+id: 326,rotulo: average-muscat,ano_colheita: 1996,tipo: tinto
+id: 357,rotulo: creamy-barolo,ano_colheita: 1996,tipo: branco
+id: 454,rotulo: obtuse-chardonnay,ano_colheita: 1996,tipo: tinto
+id: 746,rotulo: laminated-noir,ano_colheita: 1996,tipo: rosé
+id: 778,rotulo: indigo-pinot,ano_colheita: 1996,tipo: rosé
