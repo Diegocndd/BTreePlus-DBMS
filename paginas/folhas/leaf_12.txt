@@ -1,9 +1,0 @@
-key: 2006
-page_id: 13
-
-key: 2007
-page_id: 12
-
-next: leaf_13
-parent: node_2
-back: leaf_10

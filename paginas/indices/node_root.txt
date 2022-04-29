@@ -1,7 +1,4 @@
+key: 1915
+left: leaf_2 
+right: leaf_3
 
-key: 1961
-left: node_1 
-right: node_3
-key: 2006
-left: null 
-right: node_4

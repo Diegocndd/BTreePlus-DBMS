@@ -1,9 +1,0 @@
-key: 1961
-page_id: 3
-
-key: 1986
-page_id: 18
-
-next: leaf_17
-parent: node_2
-back: leaf_6

@@ -12,7 +12,7 @@ from editIndex import editIndex
 from editLeaf import editLeaf
 import sys
 
-ORDER = 4
+ORDER = 11
 ERROR_ROOT = 'root node does not exist'
 
 def generateId(type):
@@ -199,7 +199,149 @@ def createLeaf(data, leafName='null', parent='null', next='null', back='null', m
 def ORDERDataNode(data):
     return sorted(data, key=lambda d: int(d['key'])) 
 
-def addInLeaf(titleNode, data):
+def checkLeafMinimum(key, childNode, parentNode):
+    currentContent = parseIndex(parentNode)
+    
+    for element in currentContent:
+        if element["right"] == childNode:
+            if element["key"] != key:
+                editIndex(parentNode, element["key"], newKey=key)
+            break
+
+def shiftIndexLeft(titleNode):
+
+    currentNode = parseIndex(titleNode)
+
+    pos, parent, nodeParent = deepInfoIndex(titleNode)
+
+    editIndex(nodeParent, parent["key"], newKey=currentNode[0]["key"])
+
+    f = open("paginas/indices/"+titleNode+".txt", "r")
+    operations = f.read().split('\n')
+    operations[:] = [x for x in operations if x]
+
+    new_content = ""
+
+    f.close()
+
+    f = open("paginas/indices/"+titleNode+".txt", "w")
+
+    for i, el in enumerate(operations):
+        if i > 2:
+            new_content += el + "\n"
+
+    f.write(new_content)
+    f.close()
+
+
+def belowMinimum(titleNode):
+
+    currentNode = parseLeaf(titleNode)
+    backNodeName = currentNode[-1]["back"]
+    nextNodeName = currentNode[-3]["next"]
+
+    if backNodeName != 'null':
+        backNode = parseLeaf(backNodeName)
+
+        n_elem_back = len(backNode[:-3])
+
+        # tenta emprestar da esquerda
+        if n_elem_back - 1 >= math.floor(ORDER / 2):
+            max_val = -1
+            page_id = None
+
+            for el in backNode[:-3]:
+                if int(el["key"]) > max_val:
+                    max_val = int(el["key"])
+                    page_id = el["page_id"]
+
+            removeInLeaf(backNodeName, str(max_val), check=False)
+
+            addInLeaf(titleNode, {'key':str(max_val), 'page_id':page_id}, pageId=page_id )
+            checkLeafMinimum(str(max_val), titleNode, currentNode[-2]["parent"])
+        else:
+            # mesclar com a esquerda
+
+            for el in currentNode[:-3]:
+                removeInLeaf(titleNode, el["key"], check=False)
+
+                addInLeaf(backNodeName, {'key': el["key"], 'page_id':el["page_id"]}, pageId=el["page_id"] )
+            
+            shiftIndexLeft(currentNode[-2]["parent"])
+
+
+            deleteFileLeaf(titleNode)
+    elif nextNodeName != 'null':
+
+        nextNode = parseLeaf(nextNodeName)
+
+        n_elem_back = len(nextNode[:-3])
+
+        # emprestar da direita
+        if n_elem_back - 1 >= math.floor(ORDER / 2):
+            min_val = 999999
+            page_id = None
+
+            for el in nextNode[:-3]:
+                if int(el["key"]) < min_val:
+                    min_val = int(el["key"])
+                    page_id = el["page_id"]
+
+            removeInLeaf(nextNodeName, str(min_val), check=False)
+
+            addInLeaf(titleNode, {'key':str(min_val), 'page_id':page_id}, pageId=page_id )
+            checkLeafMinimum(str(min_val), titleNode, currentNode[-2]["parent"])
+        else:
+            # mesclar com a direita
+
+            for el in currentNode[:-3]:
+                removeInLeaf(titleNode, el["key"], check=False)
+
+                addInLeaf(nextNodeName, {'key': el["key"], 'page_id':el["page_id"]}, pageId=el["page_id"] )
+            
+            shiftIndexLeft(currentNode[-2]["parent"])
+
+
+            deleteFileLeaf(titleNode)
+
+
+def removeInLeaf(titleNode, key, check=True):
+    currentContent = parseLeaf(titleNode)
+    arrayToSort = currentContent[:-3]
+    pointersData = currentContent[-3:]
+    
+    f = open("paginas/folhas/" + titleNode + ".txt", "w+", encoding="utf-8")
+
+    leafContent = ""
+    original_len = len(arrayToSort)
+
+    new_n_elem = 0
+    new_minimum = -1
+    
+    for element in ORDERDataNode(arrayToSort):
+        if element["key"] != key:
+
+            new_n_elem += 1
+
+            if new_minimum == -1:
+                new_minimum = element["key"]
+            leafContent += "key: {}\npage_id: {}\n\n".format(element["key"], element["page_id"])
+    
+    leafContent += "next: " + pointersData[0]["next"] + "\n" #next
+    leafContent += "parent: " + pointersData[1]["parent"] + "\n" #parent
+    leafContent += "back: " + pointersData[2]["back"] #back
+
+    f.write(leafContent)
+    f.close()
+
+    if check:
+        if original_len != new_n_elem:
+            if new_n_elem  < math.floor(ORDER / 2):
+                belowMinimum(titleNode)
+            else:
+                checkLeafMinimum(str(new_minimum), titleNode, pointersData[1]["parent"])
+
+def addInLeaf(titleNode, data, pageId=None):
     # data é um array de dicionários
     
     currentContent = parseLeaf(titleNode)
@@ -209,13 +351,14 @@ def addInLeaf(titleNode, data):
     exists = False
     page_id = ""
     
-    for element in arrayToSort:
-        
-        if element["key"] == data[0]["key"]:
-            # verificou que já existe a chave na folha, salvar page_id correspondente
-            exists = True
-            page_id = element["page_id"]
-            break
+    if not pageId:
+        for element in arrayToSort:
+            
+            if element["key"] == data[0]["key"]:
+                # verificou que já existe a chave na folha, salvar page_id correspondente
+                exists = True
+                page_id = element["page_id"]
+                break
 
     if exists:
         # chave já existe na folha
@@ -244,9 +387,11 @@ def addInLeaf(titleNode, data):
         f = open("paginas/folhas/" + titleNode + ".txt", "w+", encoding="utf-8")
 
         # criar nova pagina de registro
-        page_id = generateId("page_id")
+        page_id = generateId("page_id") if not pageId else pageId
 
         leafContent = ""
+
+        data = [data] if pageId else data
 
         for element in data:
             arrayToSort.append({"key":element["key"], "page_id": str(page_id)})
@@ -261,20 +406,21 @@ def addInLeaf(titleNode, data):
         f.write(leafContent)
         f.close()
 
-        # adicionar registro na pagina de registros criada
-        f = open("paginas/dados/page_" + page_id + ".txt", "w+")
-        pageContent = ""
+        if not pageId:
+            # adicionar registro na pagina de registros criada
+            f = open("paginas/dados/page_" + page_id + ".txt", "w+")
+            pageContent = ""
 
-        for element in data:
-            key = element['key']
-            id_element = element['id']
-            tipo = element['tipo']
-            rotulo = element['rotulo']
+            for element in data:
+                key = element['key']
+                id_element = element['id']
+                tipo = element['tipo']
+                rotulo = element['rotulo']
 
-            pageContent += "id: {},rotulo: {},ano_colheita: {},tipo: {}\n".format(str(id_element), rotulo, str(key), tipo)
-        
-        f.write(pageContent)
-        f.close() 
+                pageContent += "id: {},rotulo: {},ano_colheita: {},tipo: {}\n".format(str(id_element), rotulo, str(key), tipo)
+            
+            f.write(pageContent)
+            f.close() 
 
 def addInIndex(titleNode, data):
     f = open("paginas/indices/" + titleNode + ".txt", "r")
@@ -432,9 +578,10 @@ def insertData(data):
             titleFile = contentLeaf[0].split('.')[0]
             addInLeaf(titleFile, [data])
             leafContent = parseLeaf(titleFile)
-
+        
             # -3 porque desconsideramos as linhas do parent, do next e do back
             if (len(leafContent) - 3 == ORDER): # se a folha estiver cheia, fazer o split e criar o root
+                
                 splitLeaf(titleFile)
     else:
         # se o root existe, vamos percorrer a árvore para descobrir onde colocar o novo dado
@@ -456,6 +603,43 @@ def insertData(data):
         if (len(leafContent) - 3 == ORDER):
             splitLeaf(page)
 
+
+def removeData(key):
+    registers = []
+
+    contentLeaf = os.listdir(path='./paginas/indices')
+
+    if len(contentLeaf) == 0:
+        contentLeaf = os.listdir(path='./paginas/folhas')
+        startNode = contentLeaf[0][:-4]
+
+        registers = searchInLeaf(startNode, key, "=") 
+
+        deleteDataPage(startNode, key)
+
+        removeInLeaf(startNode, str(key))
+
+    else:
+
+        actualNode = parseIndex('node_root')
+        referenceNode, position = getRangeOfKey(key, actualNode)
+
+        page = actualNode[referenceNode][position]
+        
+        
+        while(page.split('_')[0] != 'leaf'):     
+            actualNode = parseIndex(page)
+            referenceNode, position = getRangeOfKey(key, actualNode)
+
+            page = actualNode[referenceNode][position]
+        
+        registers = searchInLeaf(page, key, "=")
+
+        deleteDataPage(page, key)
+
+        removeInLeaf(page, str(key))
+    
+    return len(registers)
 
 def leafPosition(leafName):
     leafData = parseLeaf(leafName)
@@ -553,7 +737,9 @@ def splitIndex(nodeTitle):
             'right': rightName,
         }], titleNode='node_root')   
     else:
+
         if (parseIndex(nodeTitle) != ERROR_ROOT and deepInfoIndex(nodeTitle) != None):
+
             pos, parent, nodeParent = deepInfoIndex(nodeTitle)
             nodeContent = parseIndex(nodeTitle)
 
@@ -690,6 +876,21 @@ def generateOutput(opType, opKey, value):
         return "BUS<:"+str(opKey)+"/"+",".join(value)+"\n"
     return "Erro\n"
 
+def deleteDataPage(page, opKey):
+    # procurar page_id da chave
+    leafContent = parseLeaf(page)
+    page_id = None
+    for elem in leafContent[:-3]:
+        if elem["key"] == str(opKey):
+            page_id = elem["page_id"]
+            break
+    
+    if page_id:
+        fileName = "paginas/dados/page_" + str(page_id) + ".txt"
+        if os.path.exists(fileName):
+            os.remove(fileName)
+
+
 def searchInLeaf(page, opKey, mode):
     # leitura sequencial nos nós folhas
     page_ids = []
@@ -737,24 +938,31 @@ def searchInLeaf(page, opKey, mode):
 def search(opKey, mode):
     registers = []
 
-    actualNode = parseIndex('node_root')
+    contentLeaf = os.listdir(path='./paginas/indices')
 
-    actualNode = parseIndex('node_root')
+    if len(contentLeaf) == 0:
+        contentLeaf = os.listdir(path='./paginas/folhas')
+        startNode = contentLeaf[0][:-4]
 
-    if actualNode != ERROR_ROOT:
-        referenceNode, position = getRangeOfKey(str(opKey), actualNode)
+        registers = searchInLeaf(startNode, opKey, mode) # retorna as tuplas encontradas 
 
-        page = actualNode[referenceNode][position]
+    else:
+        actualNode = parseIndex('node_root')
 
-        while(page.split('_')[0] != 'leaf'):
-            actualNode = parseIndex(page)
+        if actualNode != ERROR_ROOT:
+
             referenceNode, position = getRangeOfKey(str(opKey), actualNode)
+
             page = actualNode[referenceNode][position]
 
-        registers = searchInLeaf(page, opKey, mode) # retorna as tuplas encontradas 
+            while(page.split('_')[0] != 'leaf'):
+                actualNode = parseIndex(page)
+                referenceNode, position = getRangeOfKey(str(opKey), actualNode)
+                page = actualNode[referenceNode][position]
 
+            registers = searchInLeaf(page, opKey, mode) # retorna as tuplas encontradas 
+        
     return registers
-
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "-reset":
@@ -772,37 +980,48 @@ if len(sys.argv) > 1:
         f.close()
         sys.exit()
 
-
 modo_teste = False
 if modo_teste:
     # testar comandos sem o arquivo de entrada
 
-    insertData({"key": "5", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": '6', "tipo": "rose", "rotulo": "bla_bla", "id": '9'})
-    insertData({"key": '7', "tipo": "cabernet", "rotulo": "xxxxxx", "id": '155'})
-    insertData({"key": "8", "tipo": "ssss", "rotulo": "bla_bla", "id": "30"})
-    insertData({"key": "9", "tipo": "hhhhh", "rotulo": "xyxyxyxy", "id": "344"})
-    insertData({"key": "10", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "11", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "12", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "13", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "14", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "15", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "16", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "17", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "18", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "19", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "20", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "21", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "22", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "23", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "24", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "25", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    insertData({"key": "26", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "5", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": '6', "tipo": "rose", "rotulo": "bla_bla", "id": '9'})
+    #insertData({"key": '7', "tipo": "cabernet", "rotulo": "xxxxxx", "id": '155'})
+    #insertData({"key": "8", "tipo": "ssss", "rotulo": "bla_bla", "id": "30"})
+    #insertData({"key": "9", "tipo": "hhhhh", "rotulo": "xyxyxyxy", "id": "344"})
+    #insertData({"key": "10", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "11", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "12", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "13", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "14", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "20", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "21", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "22", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "15", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "16", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #removeData(22)
+    #removeData(21)
+    
+    #insertData({"key": "16", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "17", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #removeData(17)
+    #removeData(15)
+    #removeData(23)
+    #insertData({"key": "18", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "19", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "20", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "21", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "22", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "23", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #removeData(23)
+    #insertData({"key": "24", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "25", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
+    #insertData({"key": "26", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
     
     #print(search(5000, '='))
     #print(search(1889, '<'))
     #print(search(1800, '<'))
+    pass
 else:
     # ler e executar operacoes do arquivo de entrada
 
@@ -821,7 +1040,11 @@ else:
                 # gerar saida da operacao de inclusao
                 output += generateOutput(op["tipo"], op["valor_c"], len(regs))
             elif op["tipo"] == "REM":
-                pass
+                # realizar remocao por chave
+                registers = removeData(int(op["valor_c"]))
+
+                # gerar saida da operacao de busca por igualdade
+                output += generateOutput(op["tipo"], op["valor_c"], registers)
             elif op["tipo"] == "BUS=":
                 # realizar busca por igualdade
                 registers = search(int(op["valor_c"]), '=')

@@ -1,9 +1,0 @@
-key: 1996
-page_id: 6
-
-key: 1999
-page_id: 19
-
-next: leaf_10
-parent: node_2
-back: leaf_16

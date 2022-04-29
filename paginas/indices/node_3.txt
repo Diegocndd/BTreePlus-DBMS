@@ -1,8 +1,0 @@
-key: 1996
-left: null 
-right: leaf_17
-
-key: 2000
-left: leaf_8 
-right: leaf_16
-

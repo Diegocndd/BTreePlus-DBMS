@@ -1,6 +1,7 @@
-id: 240,rotulo: wise-sauvignon,ano_colheita: 1960,tipo: rosé
-id: 263,rotulo: swarm-barbaresco,ano_colheita: 1960,tipo: rosé
-id: 759,rotulo: binding-champagne,ano_colheita: 1960,tipo: branco
-id: 836,rotulo: wood-mead,ano_colheita: 1960,tipo: rosé
-id: 944,rotulo: lenient-chinon,ano_colheita: 1960,tipo: branco
-id: 968,rotulo: radial-auslese,ano_colheita: 1960,tipo: tinto
+id: 268,rotulo: long-chablis,ano_colheita: 1918,tipo: rosé
+id: 376,rotulo: dry-pinot,ano_colheita: 1918,tipo: rosé
+id: 463,rotulo: tart-merlot,ano_colheita: 1918,tipo: branco
+id: 855,rotulo: absolute-bardolino,ano_colheita: 1918,tipo: tinto
+id: 920,rotulo: tranquil-riesling,ano_colheita: 1918,tipo: rosé
+id: 923,rotulo: corporate-mead,ano_colheita: 1918,tipo: rosé
+id: 930,rotulo: bone-madeira,ano_colheita: 1918,tipo: tinto

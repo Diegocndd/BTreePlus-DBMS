@@ -1,5 +1,0 @@
-id: 564,rotulo: congruent-moscato,ano_colheita: 2006,tipo: tinto
-id: 570,rotulo: online-chardonnay,ano_colheita: 2006,tipo: tinto
-id: 629,rotulo: convoluted-moscato,ano_colheita: 2006,tipo: branco
-id: 835,rotulo: concave-sherry,ano_colheita: 2006,tipo: branco
-id: 943,rotulo: searing-sauvignon,ano_colheita: 2006,tipo: branco
