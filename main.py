@@ -211,33 +211,33 @@ def checkLeafMinimum(key, childNode, parentNode):
             break
 
 def shiftIndexLeft(titleNode):
-
     currentNode = parseIndex(titleNode)
+    try:
+        pos, parent, nodeParent = deepInfoIndex(titleNode)
 
-    pos, parent, nodeParent = deepInfoIndex(titleNode)
+        editIndex(nodeParent, parent["key"], newKey=currentNode[0]["key"])
 
-    editIndex(nodeParent, parent["key"], newKey=currentNode[0]["key"])
+        f = open("paginas/indices/"+titleNode+".txt", "r")
+        operations = f.read().split('\n')
+        operations[:] = [x for x in operations if x]
 
-    f = open("paginas/indices/"+titleNode+".txt", "r")
-    operations = f.read().split('\n')
-    operations[:] = [x for x in operations if x]
+        new_content = ""
 
-    new_content = ""
+        f.close()
 
-    f.close()
+        f = open("paginas/indices/"+titleNode+".txt", "w")
 
-    f = open("paginas/indices/"+titleNode+".txt", "w")
+        for i, el in enumerate(operations):
+            if i > 2:
+                new_content += el + "\n"
 
-    for i, el in enumerate(operations):
-        if i > 2:
-            new_content += el + "\n"
-
-    f.write(new_content)
-    f.close()
+        f.write(new_content)
+        f.close()
+    except:
+        print('ERRO AO REALIZAR SHIFT DE ELEMENTOS')
 
 
 def belowMinimum(titleNode):
-
     currentNode = parseLeaf(titleNode)
     backNodeName = currentNode[-1]["back"]
     nextNodeName = currentNode[-3]["next"]
