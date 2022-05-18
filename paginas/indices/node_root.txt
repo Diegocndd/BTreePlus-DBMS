@@ -1,8 +1,8 @@
-key: 2
+key: 1986
 left: leaf_2 
 right: leaf_4
 
-key: 3
+key: 1988
 left: null 
 right: leaf_5
 
