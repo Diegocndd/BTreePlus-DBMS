@@ -1,4 +1,1 @@
-id: 370,rotulo: green-sauvignon,ano_colheita: 1914,tipo: tinto
-id: 706,rotulo: best-barbaresco,ano_colheita: 1914,tipo: branco
-id: 799,rotulo: black-noir,ano_colheita: 1914,tipo: tinto
-id: 867,rotulo: excited-chardonnay,ano_colheita: 1914,tipo: branco
+vinho_id: 3,rotulo: null-bardolino,ano_colheita: 2001,tipo: tinto

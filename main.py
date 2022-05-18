@@ -2,7 +2,6 @@
 As funções de parse leem o conteúdo das páginas e retornam dicionários com as informações
 para serem tratadas pelo programa.
 """
-
 from ntpath import join
 from random import random, randint
 import math
@@ -12,8 +11,10 @@ from editIndex import editIndex
 from editLeaf import editLeaf
 import sys
 
-ORDER = 11
+ORDER = 4
 ERROR_ROOT = 'root node does not exist'
+ATRIBUTO = 'vinho_id'
+ARQUIVO_BASE = 'vinhos.csv'
 
 def generateId(type):
     f = open("current_ids.txt", "r")
@@ -183,21 +184,22 @@ def createLeaf(data, leafName='null', parent='null', next='null', back='null', m
         # salvar registros na pagina de registros
         f = open("paginas/dados/page_" + new_page_id + ".txt", "w")
         pageContent = ""
-        
-        for element in data:
-            key = element['key']
-            id_element = element['id']
-            tipo = element['tipo']
-            rotulo = element['rotulo']
 
-            pageContent += "id: {},rotulo: {},ano_colheita: {},tipo: {}\n".format(str(id_element), rotulo, str(key), tipo)
-        
+        for element in data:
+            attrs = list(element.keys())
+
+            for attr in attrs:
+                if attr != 'key':
+                    pageContent += attr + ": " + str(element[attr]) + ","
+            pageContent = pageContent[:-1]
+            pageContent += '\n'
+
         f.write(pageContent)
         f.close()
         
 
 def ORDERDataNode(data):
-    return sorted(data, key=lambda d: int(d['key'])) 
+    return sorted(data, key=lambda d: d['key']) 
 
 def checkLeafMinimum(key, childNode, parentNode):
     currentContent = parseIndex(parentNode)
@@ -251,7 +253,7 @@ def belowMinimum(titleNode):
             page_id = None
 
             for el in backNode[:-3]:
-                if int(el["key"]) > max_val:
+                if el["key"] > max_val:
                     max_val = int(el["key"])
                     page_id = el["page_id"]
 
@@ -370,14 +372,22 @@ def addInLeaf(titleNode, data, pageId=None):
         pageContent = ""
 
         for element in registrosPag:
-            pageContent += "id: {},rotulo: {},ano_colheita: {},tipo: {}\n".format(element["id"], element["rotulo"], element["ano_colheita"], element["tipo"])
+            attrs = list(element.keys())
+
+            for attr in attrs:
+                if attr != 'key':
+                    pageContent += attr + ": " + str(element[attr]) + ","
+            pageContent = pageContent[:-1]
+            pageContent += '\n'
 
         for element in data:
-            key = element['key']
-            id_element = element['id']
-            tipo = element['tipo']
-            rotulo = element['rotulo']
-            pageContent += "id: {},rotulo: {},ano_colheita: {},tipo: {}\n".format(str(id_element), rotulo, str(key), tipo)
+            attrs = list(element.keys())
+
+            for attr in attrs:
+                if attr != 'key':
+                    pageContent += attr + ": " + str(element[attr]) + ","
+            pageContent = pageContent[:-1]
+            pageContent += '\n'
 
         f.write(pageContent)
         f.close()
@@ -412,12 +422,22 @@ def addInLeaf(titleNode, data, pageId=None):
             pageContent = ""
 
             for element in data:
-                key = element['key']
-                id_element = element['id']
-                tipo = element['tipo']
-                rotulo = element['rotulo']
+                attrs = list(element.keys())
 
-                pageContent += "id: {},rotulo: {},ano_colheita: {},tipo: {}\n".format(str(id_element), rotulo, str(key), tipo)
+                for attr in attrs:
+                    if attr != 'key':
+                        pageContent += attr + ": " + str(element[attr]) + ","
+                pageContent = pageContent[:-1]
+                pageContent += '\n'
+
+            # for element in data:
+            #     key = element['key']
+            #     id_element = element['id']
+            #     tipo = element['tipo']
+            #     rotulo = element['rotulo']
+            #     ano_colheita = element['ano_colheita']
+
+            #     pageContent += "id: {},rotulo: {},ano_colheita: {},tipo: {}\n".format(str(id_element), rotulo, str(ano_colheita), tipo)
             
             f.write(pageContent)
             f.close() 
@@ -805,25 +825,23 @@ def readInput():
 
     ops = []
 
-    
-
     for op in operations:
         o = {}
         if op[:4] == "INC:":
             o["tipo"] = "INC"
-            o["valor_c"] = int(op[4:])
+            o["valor_c"] = op[4:]
         elif op[:4] == "REM:":
             o["tipo"] = "REM"
-            o["valor_c"] = int(op[4:])
+            o["valor_c"] = op[4:]
         elif op[:5] == "BUS=:":
             o["tipo"] = "BUS="
-            o["valor_c"] = int(op[5:])
+            o["valor_c"] = op[5:]
         elif op[:5] == "BUS>:":
             o["tipo"] = "BUS>"
-            o["valor_c"] = int(op[5:])
+            o["valor_c"] = op[5:]
         elif op[:5] == "BUS<:":
             o["tipo"] = "BUS<"
-            o["valor_c"] = int(op[5:])
+            o["valor_c"] = op[5:]
         else:
             print("Ignorando operacao invalida")
         ops.append(o)
@@ -831,25 +849,30 @@ def readInput():
 
     return prim_l, ops
 
-def fetchCSV(ano_colheita):
-    # buscar registros com ano_colheita especificado no vinhos.csv e retornar como dicionarios
-    f = open("vinhos.csv", "r")
+def fetchCSV(key):
+    f = open(ARQUIVO_BASE, "r")
     registros = f.read().split('\n')
     registros[:] = [x for x in registros if x]
 
-    registros.pop(0) # remover header
+    atributos = registros.pop(0) # remover header
+    atributos = atributos.split(',')
+    atributoIndex = atributos.index(ATRIBUTO)
 
     dataList = []
 
     for reg in registros:
         data = {}
         reg_split = reg.split(',')
-        ano_c = int(reg_split[2])
-        if ano_c == ano_colheita:
-            data["id"] = reg_split[0]
-            data["rotulo"] = reg_split[1]
-            data["key"] = reg_split[2]
-            data["tipo"] = reg_split[3]
+        # print(reg_split[3] == key)
+        keyData = reg_split[atributoIndex]
+
+        count = 0
+        if str(keyData) == str(key):
+            for atr in atributos:
+                if count == atributoIndex:
+                    data['key'] = reg_split[count]
+                data[atr] = reg_split[count]
+                count += 1
             dataList.append(data)
 
     return dataList
@@ -907,7 +930,7 @@ def searchInLeaf(page, opKey, mode):
         leafContent = parseLeaf(page)
 
         for elem in leafContent[:-3]:
-            if int(elem["key"]) > int(opKey):
+            if str(elem["key"]) > str(opKey):
                 page_ids.append(elem["page_id"])
 
         next = leafContent[-3]['next']    
@@ -921,7 +944,7 @@ def searchInLeaf(page, opKey, mode):
         leafContent = parseLeaf(page)
 
         for elem in leafContent[:-3]:
-            if int(elem["key"]) < int(opKey):
+            if str(elem["key"]) < str(opKey):
                 page_ids.append(elem["page_id"])
 
         back = leafContent[-1]['back']    
@@ -983,11 +1006,18 @@ if len(sys.argv) > 1:
 modo_teste = False
 if modo_teste:
     # testar comandos sem o arquivo de entrada
-
-    #insertData({"key": "5", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": '6', "tipo": "rose", "rotulo": "bla_bla", "id": '9'})
-    #insertData({"key": '7', "tipo": "cabernet", "rotulo": "xxxxxx", "id": '155'})
-    #insertData({"key": "8", "tipo": "ssss", "rotulo": "bla_bla", "id": "30"})
+    insertData({"key": "a", "tipo": "lalal", "rotulo": "opopopo", "id": "19", "ano_colheita": "1984"})
+    insertData({"key": 'b', "tipo": "rose", "rotulo": "bla_bla", "id": '9', "ano_colheita": "2021"})
+    insertData({"key": 'c', "tipo": "cabernet", "rotulo": "xxxxxx", "id": '155', "ano_colheita": "1904"})
+    insertData({"key": "d", "tipo": "ssss", "rotulo": "bla_bla", "id": "30", "ano_colheita": "1866"})
+    insertData({"key": "d", "tipo": "ssss", "rotulo": "bla_bla", "id": "30", "ano_colheita": "2003"})
+    insertData({"key": "uuu", "tipo": "hhhhh", "rotulo": "xyxyxyxy", "id": "344", "ano_colheita": "2003"})
+    insertData({"key": "ui", "tipo": "lalal", "rotulo": "opopopo", "id": "19", "ano_colheita": "2003"})
+    insertData({"key": "OP", "tipo": "lalal", "rotulo": "opopopo", "id": "20", "ano_colheita": "2003"})
+    insertData({"key": "eeee", "tipo": "lalal", "rotulo": "opopopo", "id": "21", "ano_colheita": "2003"})
+    insertData({"key": "leleo", "tipo": "lalal", "rotulo": "opopopo", "id": "22", "ano_colheita": "2003"})
+    print(search('d', '='))
+    # removeData('eeee')
     #insertData({"key": "9", "tipo": "hhhhh", "rotulo": "xyxyxyxy", "id": "344"})
     #insertData({"key": "10", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
     #insertData({"key": "11", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
@@ -1013,7 +1043,6 @@ if modo_teste:
     #insertData({"key": "21", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
     #insertData({"key": "22", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
     #insertData({"key": "23", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #removeData(23)
     #insertData({"key": "24", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
     #insertData({"key": "25", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
     #insertData({"key": "26", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
@@ -1033,7 +1062,8 @@ else:
         for op in ops:
             if op["tipo"] == "INC":
                 # buscar registros e inserir na indexacao
-                regs = fetchCSV(int(op["valor_c"]))
+                regs = fetchCSV(str(op["valor_c"]).strip())
+
                 for reg in regs:
                     insertData(reg)
 

@@ -1,9 +1,0 @@
-id: 206,rotulo: pallid-champagne,ano_colheita: 1919,tipo: rosé
-id: 220,rotulo: happy-malbec,ano_colheita: 1919,tipo: branco
-id: 250,rotulo: broad-beaujolais,ano_colheita: 1919,tipo: branco
-id: 273,rotulo: plum-shiraz,ano_colheita: 1919,tipo: branco
-id: 379,rotulo: religious-lambrusco,ano_colheita: 1919,tipo: branco
-id: 382,rotulo: sunny-madeira,ano_colheita: 1919,tipo: tinto
-id: 408,rotulo: canary-riesling,ano_colheita: 1919,tipo: rosé
-id: 486,rotulo: libretto-merlot,ano_colheita: 1919,tipo: tinto
-id: 933,rotulo: resultant-cabernet,ano_colheita: 1919,tipo: tinto

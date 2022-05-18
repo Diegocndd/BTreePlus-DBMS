@@ -1,4 +1,8 @@
-key: 1915
+key: 2
 left: leaf_2 
-right: leaf_3
+right: leaf_4
+
+key: 3
+left: null 
+right: leaf_5
 

@@ -1,7 +1,0 @@
-id: 268,rotulo: long-chablis,ano_colheita: 1918,tipo: rosé
-id: 376,rotulo: dry-pinot,ano_colheita: 1918,tipo: rosé
-id: 463,rotulo: tart-merlot,ano_colheita: 1918,tipo: branco
-id: 855,rotulo: absolute-bardolino,ano_colheita: 1918,tipo: tinto
-id: 920,rotulo: tranquil-riesling,ano_colheita: 1918,tipo: rosé
-id: 923,rotulo: corporate-mead,ano_colheita: 1918,tipo: rosé
-id: 930,rotulo: bone-madeira,ano_colheita: 1918,tipo: tinto

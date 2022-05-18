@@ -1,12 +1,1 @@
-id: 0,rotulo: teal-barolo,ano_colheita: 1913,tipo: rosé
-id: 7,rotulo: international-barbaresco,ano_colheita: 1913,tipo: rosé
-id: 130,rotulo: humid-banylus,ano_colheita: 1913,tipo: tinto
-id: 160,rotulo: jet-barbaresco,ano_colheita: 1913,tipo: rosé
-id: 171,rotulo: cyclic-banylus,ano_colheita: 1913,tipo: tinto
-id: 178,rotulo: oblique-grappa,ano_colheita: 1913,tipo: branco
-id: 204,rotulo: calm-grappa,ano_colheita: 1913,tipo: tinto
-id: 213,rotulo: forward-cabernet,ano_colheita: 1913,tipo: rosé
-id: 491,rotulo: generative-rosé,ano_colheita: 1913,tipo: tinto
-id: 530,rotulo: sweet-chianti,ano_colheita: 1913,tipo: tinto
-id: 639,rotulo: proper-moscato,ano_colheita: 1913,tipo: rosé
-id: 917,rotulo: numerous-cabernet,ano_colheita: 1913,tipo: rosé
+vinho_id: 2,rotulo: foggy-chardonnay,ano_colheita: 1923,tipo: branco

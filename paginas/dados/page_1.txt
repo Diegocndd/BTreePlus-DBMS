@@ -1,7 +1,1 @@
-id: 80,rotulo: reduced-sauvignon,ano_colheita: 1910,tipo: rosé
-id: 129,rotulo: warped-pinot,ano_colheita: 1910,tipo: tinto
-id: 222,rotulo: large-amarone,ano_colheita: 1910,tipo: rosé
-id: 417,rotulo: presto-beaujolais,ano_colheita: 1910,tipo: tinto
-id: 431,rotulo: best-chianti,ano_colheita: 1910,tipo: tinto
-id: 503,rotulo: purple-chianti,ano_colheita: 1910,tipo: rosé
-id: 937,rotulo: mode-banylus,ano_colheita: 1910,tipo: rosé
+vinho_id: 1,rotulo: forward-claret,ano_colheita: 1964,tipo: tinto

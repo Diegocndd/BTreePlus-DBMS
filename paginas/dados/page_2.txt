@@ -1,12 +1,1 @@
-id: 211,rotulo: calm-burgundy,ano_colheita: 1911,tipo: tinto
-id: 230,rotulo: fixed-chinon,ano_colheita: 1911,tipo: branco
-id: 291,rotulo: warm-chianti,ano_colheita: 1911,tipo: rosé
-id: 320,rotulo: metal-merlot,ano_colheita: 1911,tipo: tinto
-id: 399,rotulo: vertical-madeira,ano_colheita: 1911,tipo: rosé
-id: 619,rotulo: plastic-chinon,ano_colheita: 1911,tipo: tinto
-id: 652,rotulo: brute-force-champagne,ano_colheita: 1911,tipo: rosé
-id: 666,rotulo: maximum-albariño,ano_colheita: 1911,tipo: branco
-id: 750,rotulo: average-rosé,ano_colheita: 1911,tipo: branco
-id: 782,rotulo: cautious-zinfandel,ano_colheita: 1911,tipo: tinto
-id: 856,rotulo: stern-sauvignon,ano_colheita: 1911,tipo: rosé
-id: 991,rotulo: forward-chinon,ano_colheita: 1911,tipo: branco
+vinho_id: 12,rotulo: several-chardonnay,ano_colheita: 1928,tipo: tinto

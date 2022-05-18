@@ -1,8 +1,0 @@
-id: 13,rotulo: excited-zinfandel,ano_colheita: 1916,tipo: branco
-id: 91,rotulo: brass-port,ano_colheita: 1916,tipo: rosé
-id: 350,rotulo: exhaustive-zinfandel,ano_colheita: 1916,tipo: branco
-id: 559,rotulo: internal-arneis,ano_colheita: 1916,tipo: rosé
-id: 566,rotulo: symmetric-cabernet,ano_colheita: 1916,tipo: rosé
-id: 663,rotulo: matching-sauvignon,ano_colheita: 1916,tipo: rosé
-id: 683,rotulo: diachronic-muscat,ano_colheita: 1916,tipo: rosé
-id: 815,rotulo: thundering-pinot,ano_colheita: 1916,tipo: branco
