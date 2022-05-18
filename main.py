@@ -13,8 +13,9 @@ import sys
 
 ORDER = 4
 ERROR_ROOT = 'root node does not exist'
-ATRIBUTO = 'vinho_id'
-ARQUIVO_BASE = 'vinhos.csv'
+
+atributo_chave = ''
+arquivo_base = ''
 
 def generateId(type):
     f = open("current_ids.txt", "r")
@@ -850,13 +851,13 @@ def readInput():
     return prim_l, ops
 
 def fetchCSV(key):
-    f = open(ARQUIVO_BASE, "r")
+    f = open(arquivo_base, "r")
     registros = f.read().split('\n')
     registros[:] = [x for x in registros if x]
 
     atributos = registros.pop(0) # remover header
     atributos = atributos.split(',')
-    atributoIndex = atributos.index(ATRIBUTO)
+    atributoIndex = atributos.index(atributo_chave)
 
     dataList = []
 
@@ -1003,105 +1004,79 @@ if len(sys.argv) > 1:
         f.close()
         sys.exit()
 
-modo_teste = False
-if modo_teste:
+def createTree(arquivo, atributo, modo_teste=False):
+    global atributo_chave
+    global arquivo_base
+
+    atributo_chave = atributo
+    arquivo_base = arquivo
+
     # testar comandos sem o arquivo de entrada
-    insertData({"key": "a", "tipo": "lalal", "rotulo": "opopopo", "id": "19", "ano_colheita": "1984"})
-    insertData({"key": 'b', "tipo": "rose", "rotulo": "bla_bla", "id": '9', "ano_colheita": "2021"})
-    insertData({"key": 'c', "tipo": "cabernet", "rotulo": "xxxxxx", "id": '155', "ano_colheita": "1904"})
-    insertData({"key": "d", "tipo": "ssss", "rotulo": "bla_bla", "id": "30", "ano_colheita": "1866"})
-    insertData({"key": "d", "tipo": "ssss", "rotulo": "bla_bla", "id": "30", "ano_colheita": "2003"})
-    insertData({"key": "uuu", "tipo": "hhhhh", "rotulo": "xyxyxyxy", "id": "344", "ano_colheita": "2003"})
-    insertData({"key": "ui", "tipo": "lalal", "rotulo": "opopopo", "id": "19", "ano_colheita": "2003"})
-    insertData({"key": "OP", "tipo": "lalal", "rotulo": "opopopo", "id": "20", "ano_colheita": "2003"})
-    insertData({"key": "eeee", "tipo": "lalal", "rotulo": "opopopo", "id": "21", "ano_colheita": "2003"})
-    insertData({"key": "leleo", "tipo": "lalal", "rotulo": "opopopo", "id": "22", "ano_colheita": "2003"})
-    print(search('d', '='))
-    # removeData('eeee')
-    #insertData({"key": "9", "tipo": "hhhhh", "rotulo": "xyxyxyxy", "id": "344"})
-    #insertData({"key": "10", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "11", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "12", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "13", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "14", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "20", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "21", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "22", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "15", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "16", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #removeData(22)
-    #removeData(21)
-    
-    #insertData({"key": "16", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "17", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #removeData(17)
-    #removeData(15)
-    #removeData(23)
-    #insertData({"key": "18", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "19", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "20", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "21", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "22", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "23", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "24", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "25", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    #insertData({"key": "26", "tipo": "lalal", "rotulo": "opopopo", "id": "19"})
-    
-    #print(search(5000, '='))
-    #print(search(1889, '<'))
-    #print(search(1800, '<'))
-    pass
-else:
-    # ler e executar operacoes do arquivo de entrada
+    if modo_teste:
+        insertData({"key": "a", "tipo": "lalal", "rotulo": "opopopo", "id": "19", "ano_colheita": "1984"})
+        insertData({"key": 'b', "tipo": "rose", "rotulo": "bla_bla", "id": '9', "ano_colheita": "2021"})
+        insertData({"key": 'c', "tipo": "cabernet", "rotulo": "xxxxxx", "id": '155', "ano_colheita": "1904"})
+        insertData({"key": "d", "tipo": "ssss", "rotulo": "bla_bla", "id": "30", "ano_colheita": "1866"})
+        insertData({"key": "d", "tipo": "ssss", "rotulo": "bla_bla", "id": "30", "ano_colheita": "2003"})
+        insertData({"key": "uuu", "tipo": "hhhhh", "rotulo": "xyxyxyxy", "id": "344", "ano_colheita": "2003"})
+        insertData({"key": "ui", "tipo": "lalal", "rotulo": "opopopo", "id": "19", "ano_colheita": "2003"})
+        insertData({"key": "OP", "tipo": "lalal", "rotulo": "opopopo", "id": "20", "ano_colheita": "2003"})
+        insertData({"key": "eeee", "tipo": "lalal", "rotulo": "opopopo", "id": "21", "ano_colheita": "2003"})
+        insertData({"key": "leleo", "tipo": "lalal", "rotulo": "opopopo", "id": "22", "ano_colheita": "2003"})
+        print(search('d', '='))
+        pass
+    else:
+        # ler e executar operacoes do arquivo de entrada
+        header, ops = readInput()
 
-    header, ops = readInput()
+        if ops:
+            output = header + "\n"
+            
+            for op in ops:
+                if op["tipo"] == "INC":
+                    # buscar registros e inserir na indexacao
+                    regs = fetchCSV(str(op["valor_c"]).strip())
 
-    if ops:
-        output = header + "\n"
-        
-        for op in ops:
-            if op["tipo"] == "INC":
-                # buscar registros e inserir na indexacao
-                regs = fetchCSV(str(op["valor_c"]).strip())
+                    for reg in regs:
+                        insertData(reg)
 
-                for reg in regs:
-                    insertData(reg)
+                    # gerar saida da operacao de inclusao
+                    output += generateOutput(op["tipo"], op["valor_c"], len(regs))
+                elif op["tipo"] == "REM":
+                    # realizar remocao por chave
+                    registers = removeData(int(op["valor_c"]))
 
-                # gerar saida da operacao de inclusao
-                output += generateOutput(op["tipo"], op["valor_c"], len(regs))
-            elif op["tipo"] == "REM":
-                # realizar remocao por chave
-                registers = removeData(int(op["valor_c"]))
+                    # gerar saida da operacao de busca por igualdade
+                    output += generateOutput(op["tipo"], op["valor_c"], registers)
+                elif op["tipo"] == "BUS=":
+                    # realizar busca por igualdade
+                    registers = search(int(op["valor_c"]), '=')
 
-                # gerar saida da operacao de busca por igualdade
-                output += generateOutput(op["tipo"], op["valor_c"], registers)
-            elif op["tipo"] == "BUS=":
-                # realizar busca por igualdade
-                registers = search(int(op["valor_c"]), '=')
+                    # gerar saida da operacao de busca por igualdade
+                    output += generateOutput(op["tipo"], op["valor_c"], len(registers))
+                elif op["tipo"] == "BUS>":
+                    # realizar busca por maior que
+                    registers = search(int(op["valor_c"]), '>')
+                    chaves = []
 
-                # gerar saida da operacao de busca por igualdade
-                output += generateOutput(op["tipo"], op["valor_c"], len(registers))
-            elif op["tipo"] == "BUS>":
-                # realizar busca por maior que
-                registers = search(int(op["valor_c"]), '>')
-                chaves = []
+                    for reg in registers:
+                        if reg["ano_colheita"] not in chaves:
+                            chaves.append(reg["ano_colheita"])
 
-                for reg in registers:
-                    if reg["ano_colheita"] not in chaves:
-                        chaves.append(reg["ano_colheita"])
+                    # gerar saida da operacao de busca por maior que
+                    output += generateOutput(op["tipo"], op["valor_c"], chaves)
+                elif op["tipo"] == "BUS<":
+                    # realizar busca por menor que
+                    registers = search(int(op["valor_c"]), '<')
+                    chaves = []
 
-                # gerar saida da operacao de busca por maior que
-                output += generateOutput(op["tipo"], op["valor_c"], chaves)
-            elif op["tipo"] == "BUS<":
-                # realizar busca por menor que
-                registers = search(int(op["valor_c"]), '<')
-                chaves = []
+                    for reg in registers:
+                        if reg["ano_colheita"] not in chaves:
+                            chaves.append(reg["ano_colheita"])
 
-                for reg in registers:
-                    if reg["ano_colheita"] not in chaves:
-                        chaves.append(reg["ano_colheita"])
+                    # gerar saida da operacao de busca por menor que
+                    output += generateOutput(op["tipo"], op["valor_c"], chaves)
 
-                # gerar saida da operacao de busca por menor que
-                output += generateOutput(op["tipo"], op["valor_c"], chaves)
+            writeOutput(output)
 
-        writeOutput(output)
+createTree('vinhos.csv', 'vinho_id')
