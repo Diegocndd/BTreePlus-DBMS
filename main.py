@@ -19,7 +19,7 @@ atributo_chave = ''
 arquivo_base = ''
 
 def generateId(type):
-    f = open("current_ids.txt", "r")
+    f = open(path_to_tree + "current_ids.txt", "r")
     elements = f.read().split('\n')
     elements[:] = [x for x in elements if x]
 
@@ -37,7 +37,7 @@ def generateId(type):
         new_id = int(elements[2].split(":")[1].strip()) + 1
         elements[2] = "page_id: " + str(new_id)
 
-    f = open("current_ids.txt", "w")
+    f = open(path_to_tree + "current_ids.txt", "w")
     
     f.write("\n".join(elements))
 
@@ -45,7 +45,7 @@ def generateId(type):
     return str(new_id)
 
 def parseLeaf(titleNode):
-    f = open("paginas/folhas/" + titleNode + ".txt", "r")
+    f = open(path_to_tree + "paginas/folhas/" + titleNode + ".txt", "r")
     elements = f.read().split('\n')
     elements[:] = [x for x in elements if x]
 
@@ -75,7 +75,7 @@ def parseLeaf(titleNode):
     return dataList
 
 def parseData(titlePage):
-    f = open("paginas/dados/" + titlePage + ".txt", "r")
+    f = open(path_to_tree + "paginas/dados/" + titlePage + ".txt", "r")
     elements = f.read().split('\n')
     elements[:] = [x for x in elements if x]
 
@@ -104,7 +104,7 @@ def joinData(page_ids):
 def parseIndex(titleNode):
     f = None
     try:
-        f = open("paginas/indices/" + titleNode + ".txt", "r")
+        f = open(path_to_tree + "paginas/indices/" + titleNode + ".txt", "r")
     except:
         return ERROR_ROOT
 
@@ -139,7 +139,7 @@ def createIndex(data, titleNode='null', leftNode='null'):
         if len(titleNode) <= 5:
             titleNode = "node_" + titleNode
 
-    f = open("paginas/indices/" + titleNode + ".txt", "w")
+    f = open(path_to_tree + "paginas/indices/" + titleNode + ".txt", "w")
     newContent = ''
 
     for element in data:
@@ -157,7 +157,7 @@ def createLeaf(data, leafName='null', parent='null', next='null', back='null', m
 
     # gerar id para a nova folha e salvar arquivo
     new_leaf_id = generateId("leaf_node") if leafName == 'null' else leafName
-    f = open("paginas/folhas/leaf_" + new_leaf_id + ".txt", "w")
+    f = open(path_to_tree + "paginas/folhas/leaf_" + new_leaf_id + ".txt", "w")
 
     leafContent = ""
     if moving:
@@ -184,7 +184,7 @@ def createLeaf(data, leafName='null', parent='null', next='null', back='null', m
 
     if not moving:
         # salvar registros na pagina de registros
-        f = open("paginas/dados/page_" + new_page_id + ".txt", "w")
+        f = open(path_to_tree + "paginas/dados/page_" + new_page_id + ".txt", "w")
         pageContent = ""
 
         for element in data:
@@ -209,7 +209,7 @@ def checkLeafMinimum(key, childNode, parentNode):
     for element in currentContent:
         if element["right"] == childNode:
             if element["key"] != key:
-                editIndex(parentNode, element["key"], newKey=key)
+                editIndex(parentNode, element["key"], newKey=key, path_to_tree=path_to_tree)
             break
 
 def shiftIndexLeft(titleNode):
@@ -217,9 +217,9 @@ def shiftIndexLeft(titleNode):
     try:
         pos, parent, nodeParent = deepInfoIndex(titleNode)
 
-        editIndex(nodeParent, parent["key"], newKey=currentNode[0]["key"])
+        editIndex(nodeParent, parent["key"], newKey=currentNode[0]["key"], path_to_tree=path_to_tree)
 
-        f = open("paginas/indices/"+titleNode+".txt", "r")
+        f = open(path_to_tree + "paginas/indices/"+titleNode+".txt", "r")
         operations = f.read().split('\n')
         operations[:] = [x for x in operations if x]
 
@@ -227,7 +227,7 @@ def shiftIndexLeft(titleNode):
 
         f.close()
 
-        f = open("paginas/indices/"+titleNode+".txt", "w")
+        f = open(path_to_tree + "paginas/indices/"+titleNode+".txt", "w")
 
         for i, el in enumerate(operations):
             if i > 2:
@@ -314,7 +314,7 @@ def removeInLeaf(titleNode, key, check=True):
     arrayToSort = currentContent[:-3]
     pointersData = currentContent[-3:]
     
-    f = open("paginas/folhas/" + titleNode + ".txt", "w+", encoding="utf-8")
+    f = open(path_to_tree + "paginas/folhas/" + titleNode + ".txt", "w+", encoding="utf-8")
 
     leafContent = ""
     original_len = len(arrayToSort)
@@ -347,7 +347,7 @@ def removeInLeaf(titleNode, key, check=True):
 
 def addInLeaf(titleNode, data, pageId=None):
     # data é um array de dicionários
-    
+
     currentContent = parseLeaf(titleNode)
     arrayToSort = currentContent[:-3]
     pointersData = currentContent[-3:]
@@ -370,7 +370,7 @@ def addInLeaf(titleNode, data, pageId=None):
         registrosPag = parseData("page_" + page_id)
         
         # adicionar registro na pagina de registros existente
-        f = open("paginas/dados/page_" + page_id + ".txt", "w")
+        f = open(path_to_tree + "paginas/dados/page_" + page_id + ".txt", "w")
         pageContent = ""
 
         for element in registrosPag:
@@ -396,7 +396,7 @@ def addInLeaf(titleNode, data, pageId=None):
 
     else:
         #chave ainda não está presente na folha
-        f = open("paginas/folhas/" + titleNode + ".txt", "w+", encoding="utf-8")
+        f = open(path_to_tree + "paginas/folhas/" + titleNode + ".txt", "w+", encoding="utf-8")
 
         # criar nova pagina de registro
         page_id = generateId("page_id") if not pageId else pageId
@@ -420,7 +420,7 @@ def addInLeaf(titleNode, data, pageId=None):
 
         if not pageId:
             # adicionar registro na pagina de registros criada
-            f = open("paginas/dados/page_" + page_id + ".txt", "w+")
+            f = open(path_to_tree + "paginas/dados/page_" + page_id + ".txt", "w+")
             pageContent = ""
 
             for element in data:
@@ -445,7 +445,7 @@ def addInLeaf(titleNode, data, pageId=None):
             f.close() 
 
 def addInIndex(titleNode, data):
-    f = open("paginas/indices/" + titleNode + ".txt", "r")
+    f = open(path_to_tree + "paginas/indices/" + titleNode + ".txt", "r")
     oldContent = f.readlines()
     oldContent = ''.join(oldContent)
 
@@ -455,7 +455,7 @@ def addInIndex(titleNode, data):
 
     f.close()
 
-    f = open("paginas/indices/" + titleNode + ".txt", "w+", encoding="utf-8")
+    f = open(path_to_tree + "paginas/indices/" + titleNode + ".txt", "w+", encoding="utf-8")
     newContent = ''
 
     for element in ORDERDataNode(arrayToSort):
@@ -469,10 +469,10 @@ def addInIndex(titleNode, data):
     f.close()   
 
 def deleteFileLeaf(titleNode):
-    os.remove("paginas/folhas/" + titleNode + ".txt")
+    os.remove(path_to_tree + "paginas/folhas/" + titleNode + ".txt")
 
 def deleteFileNode(titleNode):
-    os.remove("paginas/indices/" + titleNode + ".txt")
+    os.remove(path_to_tree + "paginas/indices/" + titleNode + ".txt")
 
 def splitLeaf(titleNode):
     leafContent = parseLeaf(titleNode)
@@ -542,7 +542,7 @@ def splitLeaf(titleNode):
                 leftLeafName = "leaf_"+leftLeafName if leftLeafName != 'null' else leftLeafName
                 rightLeafName = "leaf_"+rightLeafName if rightLeafName != 'null' else rightLeafName
 
-                editIndex(parentName, key=keyParent, newLeft='null')
+                editIndex(parentName, key=keyParent, newLeft='null', path_to_tree=path_to_tree)
                 
                 addInIndex(parentName, [{
                     'key': rightContent[0]['key'],
@@ -550,7 +550,7 @@ def splitLeaf(titleNode):
                     'right': rightLeafName,
                 }])
                 
-                editLeaf(nextName, newBack=rightLeafName)
+                editLeaf(nextName, newBack=rightLeafName, path_to_tree=path_to_tree)
 
                 deleteFileLeaf(titleNode)
             else:
@@ -569,7 +569,7 @@ def splitLeaf(titleNode):
                 leftLeafName = "leaf_"+leftLeafName if leftLeafName != 'null' else leftLeafName
                 rightLeafName = "leaf_"+rightLeafName if rightLeafName != 'null' else rightLeafName
                 
-                editIndex(parentName, key=keyParent, newRight=leftLeafName)
+                editIndex(parentName, key=keyParent, newRight=leftLeafName, path_to_tree=path_to_tree)
 
                 addInIndex(parentName, [{
                     'key': rightContent[0]['key'],
@@ -577,7 +577,7 @@ def splitLeaf(titleNode):
                     'right': rightLeafName,
                 }])
                 
-                editLeaf(backName, newNext=leftLeafName)
+                editLeaf(backName, newNext=leftLeafName, path_to_tree=path_to_tree)
 
                 deleteFileLeaf(titleNode)
 
@@ -591,7 +591,7 @@ def insertData(data):
 
     if root == ERROR_ROOT:
         # verifica se já existe algum nó-folha sendo construído
-        contentLeaf = os.listdir(path='./paginas/folhas')
+        contentLeaf = os.listdir(path=path_to_tree + 'paginas/folhas')
         if len(contentLeaf) == 0:
             # se não existir, cria a primeira folha
             createLeaf([data])
@@ -629,10 +629,10 @@ def insertData(data):
 def removeData(key):
     registers = []
 
-    contentLeaf = os.listdir(path='./paginas/indices')
+    contentLeaf = os.listdir(path=path_to_tree + 'paginas/indices')
 
     if len(contentLeaf) == 0:
-        contentLeaf = os.listdir(path='./paginas/folhas')
+        contentLeaf = os.listdir(path=path_to_tree + 'paginas/folhas')
         startNode = contentLeaf[0][:-4]
 
         registers = searchInLeaf(startNode, key, "=") 
@@ -697,7 +697,7 @@ def deepInfoIndex(nodeTitle='', firstNode='node_root'):
             return deepInfoIndex(nodeTitle, firstNode=index['right'])
 
 def splitIndex(nodeTitle):
-    contentIndices = os.listdir(path='./paginas/indices')
+    contentIndices = os.listdir(path=path_to_tree + 'paginas/indices')
     
     if len(contentIndices) == 1: # então só existe o nó root
         nodeContent = parseIndex(nodeTitle)
@@ -713,15 +713,15 @@ def splitIndex(nodeTitle):
 
         for index in leftContent:
             if (index['left'] != 'null'):
-                editLeaf(index['left'], newParent=leftName)
+                editLeaf(index['left'], newParent=leftName, path_to_tree=path_to_tree)
             if (index['right'] != 'null'):
-                editLeaf(index['right'], newParent=leftName)
+                editLeaf(index['right'], newParent=leftName, path_to_tree=path_to_tree)
 
         for index in rightContent:
             if (index['left'] != 'null'):
-                editLeaf(index['left'], newParent=rightName)
+                editLeaf(index['left'], newParent=rightName, path_to_tree=path_to_tree)
             if (index['right'] != 'null'):
-                editLeaf(index['right'], newParent=rightName) 
+                editLeaf(index['right'], newParent=rightName, path_to_tree=path_to_tree) 
 
         deleteFileNode('node_root')
         createIndex([{
@@ -777,15 +777,15 @@ def splitIndex(nodeTitle):
             if nodeContent[0]['left'].split('_')[0] == 'leaf':
                 for index in leftContent:
                     if (index['left'] != 'null'):
-                        editLeaf(index['left'], newParent=leftName)
+                        editLeaf(index['left'], newParent=leftName, path_to_tree=path_to_tree)
                     if (index['right'] != 'null'):
-                        editLeaf(index['right'], newParent=leftName)
+                        editLeaf(index['right'], newParent=leftName, path_to_tree=path_to_tree)
 
                 for index in rightContent:
                     if (index['left'] != 'null'):
-                        editLeaf(index['left'], newParent=rightName)
+                        editLeaf(index['left'], newParent=rightName, path_to_tree=path_to_tree)
                     if (index['right'] != 'null'):
-                        editLeaf(index['right'], newParent=rightName)
+                        editLeaf(index['right'], newParent=rightName, path_to_tree=path_to_tree)
 
             createIndex(rightContent[1:], titleNode=rightName, leftNode=rightContent[0]["right"])
             createIndex(leftContent, titleNode=leftName)
@@ -796,7 +796,7 @@ def splitIndex(nodeTitle):
                     'right': rightName,
                     'left': 'null',
                 }])
-                editIndex(nodeParent, parent['key'], newRight=leftName)
+                editIndex(nodeParent, parent['key'], newRight=leftName, path_to_tree=path_to_tree)
                         
             if pos == 'left':
                 addInIndex(nodeParent, [{
@@ -805,40 +805,12 @@ def splitIndex(nodeTitle):
                     'left': leftName,
                 }])
 
-                editIndex(nodeParent, parent['key'], newLeft='null')
+                editIndex(nodeParent, parent['key'], newLeft='null', path_to_tree=path_to_tree)
                 
             if (len(parseIndex(nodeParent)) == ORDER - 1):
                 splitIndex(nodeParent)
 
             deleteFileNode(nodeTitle)
-
-def fetchCSV(key):
-    f = open(arquivo_base, "r")
-    registros = f.read().split('\n')
-    registros[:] = [x for x in registros if x]
-
-    atributos = registros.pop(0) # remover header
-    atributos = atributos.split(',')
-    atributoIndex = atributos.index(atributo_chave)
-
-    dataList = []
-
-    for reg in registros:
-        data = {}
-        reg_split = reg.split(',')
-        # print(reg_split[3] == key)
-        keyData = reg_split[atributoIndex]
-
-        count = 0
-        if str(keyData) == str(key):
-            for atr in atributos:
-                if count == atributoIndex:
-                    data['key'] = reg_split[count]
-                data[atr] = reg_split[count]
-                count += 1
-            dataList.append(data)
-
-    return dataList
 
 def generateOutput(opType, opKey, value):
     # gerar saida de acordo com o tipo da operacao
@@ -917,10 +889,10 @@ def searchInLeaf(page, opKey, mode):
 def search(opKey, mode):
     registers = []
 
-    contentLeaf = os.listdir(path='./paginas/indices')
+    contentLeaf = os.listdir(path=path_to_tree + 'paginas/indices')
 
     if len(contentLeaf) == 0:
-        contentLeaf = os.listdir(path='./paginas/folhas')
+        contentLeaf = os.listdir(path=path_to_tree + 'paginas/folhas')
         startNode = contentLeaf[0][:-4]
 
         registers = searchInLeaf(startNode, opKey, mode) # retorna as tuplas encontradas 
@@ -943,28 +915,26 @@ def search(opKey, mode):
         
     return registers
 
-if len(sys.argv) > 1:
-    if sys.argv[1] == "-reset":
-        # apagar toda a estrutura de indexacao e os registros
-        for mydir in ["paginas/dados/", "paginas/folhas/", "paginas/indices/"]:
-            filelist = [ f for f in os.listdir(mydir) if f.endswith(".txt") ]
-            for f in filelist:
-                os.remove(os.path.join(mydir, f))
+def createBaseFiles(path):
+    newPath = path + 'paginas/'
+    os.makedirs(newPath)
+    os.makedirs(newPath + 'dados')
+    os.makedirs(newPath + 'folhas')
+    os.makedirs(newPath + 'indices')
+    f = open(path + "current_ids.txt", "w")
+    f.write("internal_node: 0\nleaf_node: 0\npage_id: 0")
+    f.close()
 
-        # resetar arquivo de current_ids
-        f = open("current_ids.txt", "w")
-        reset_current_ids = "internal_node: 0\nleaf_node: 0\npage_id: 0"
-        f.write(reset_current_ids)
-        print("Tudo resetado")
-        f.close()
-        sys.exit()
-
-def createTree(arquivo, atributo, path='', dataToAdd=[]):
+def createTree(arquivo, atributo, dataToAdd=[], table='', attribute=''):
     global atributo_chave
     global arquivo_base
     global path_to_tree
 
-    path_to_tree = path
+    path_to_tree = 'tabelas/' + table + '/' + attribute + '/' 
+
+    if os.path.exists(path_to_tree + 'paginas/') == False:
+        createBaseFiles(path_to_tree)
+
     atributo_chave = atributo
     arquivo_base = arquivo
 
@@ -988,4 +958,23 @@ data = [
     {"key": "1990", "tipo": "lalal", "rotulo": "opopopo", "id": "19", "ano_colheita": "1990"},
 ]
 
-createTree('vinhos.csv', 'vinho_id', dataToAdd=data)
+if len(sys.argv) > 1:
+    if sys.argv[1] == "-reset":
+        table = sys.argv[2].split('=')[1]
+        attr = sys.argv[3].split('=')[1]
+        path_to_tree = 'tabelas/' + table + '/' + attr + '/' 
+        # apagar toda a estrutura de indexacao e os registros
+        for mydir in [path_to_tree + "paginas/dados/", path_to_tree + "paginas/folhas/", path_to_tree + "paginas/indices/"]:
+            filelist = [ f for f in os.listdir(mydir) if f.endswith(".txt") ]
+            for f in filelist:
+                os.remove(os.path.join(mydir, f))
+
+        # resetar arquivo de current_ids
+        f = open(path_to_tree + "current_ids.txt", "w")
+        reset_current_ids = "internal_node: 0\nleaf_node: 0\npage_id: 0"
+        f.write(reset_current_ids)
+        print("Tudo resetado")
+        f.close()
+        sys.exit()
+else:
+    createTree('pais.csv', 'nome', dataToAdd=data, table='pais', attribute='nome')
